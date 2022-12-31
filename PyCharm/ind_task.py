@@ -11,6 +11,7 @@ def help_program():
     print("add - добавление рейса\n"
           "help - помощь по командам\n"
           "select \"пункт назначения\" - вывод самолетов летящих в п.н.\n"
+          "display_plane - вывод всех самолетов\n"
           "exit - выход из программы")
 
 
@@ -37,13 +38,42 @@ def select_program(planes):
         print("рейсов не найдено")
 
 
-def plane_print(planes):
-    for i in planes:
-        print(f"куда - {i['destination']} номер - {i['flight_number']} самолет - {i['type_plane']}")
-
-
 def error():
     print('неверная комманда')
+
+
+def display_plane(staff):
+    if staff:
+        line = '+-{}-+-{}-+-{}-+-{}-+'.format(
+                '-' * 4,
+                '-' * 30,
+                '-' * 20,
+                '-' * 8
+            )
+        print(line)
+        print(
+            '| {:^4} | {:^30} | {:^20} | {:^8} |'.format(
+                "№",
+                "Направление",
+                "Тип самолета",
+                "рейс"
+            )
+        )
+        print(line)
+
+        for idx, worker in enumerate(staff, 1):
+            print(
+                '| {:>4} | {:<30} | {:<20} | {:>8} |'.format(
+                    idx,
+                    worker.get('destination', ''),
+                    worker.get('type_plane', ''),
+                    worker.get('flight_number', 0)
+                )
+            )
+            print(line)
+
+    else:
+        print("рейсов не найдено")
 
 
 def menu(lst_plane):
@@ -56,8 +86,8 @@ def menu(lst_plane):
         lst_plane = add_program(lst_plane)
     elif command == 'select':
         select_program(lst_plane)
-    elif command == 'plane_print':
-        plane_print(lst_plane)
+    elif command == 'display_plane':
+        display_plane(lst_plane)
     else:
         error()
 
